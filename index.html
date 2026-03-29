@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loup Content Publisher</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #131a2e;
+      --muted: #9aa4bf;
+      --text: #eef2ff;
+      --accent: #25f4ee;
+      --accent2: #fe2c55;
+      --line: #26304f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #0b1020 0%, #11182d 100%);
+      color: var(--text);
+    }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 40px 20px 80px; }
+    .hero { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 28px; }
+    .badge { display: inline-block; padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 12px; }
+    h1 { margin: 12px 0 10px; font-size: 40px; line-height: 1.05; }
+    p { color: var(--muted); line-height: 1.6; }
+    .grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 20px; }
+    .card {
+      background: rgba(19, 26, 46, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.22);
+    }
+    .section-title { margin: 0 0 14px; font-size: 18px; }
+    label { display: block; margin: 14px 0 8px; font-size: 14px; color: #dbe5ff; }
+    input[type="text"], textarea, select {
+      width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line);
+      background: #0f1528; color: var(--text); outline: none;
+    }
+    textarea { min-height: 120px; resize: vertical; }
+    input[type="file"] {
+      width: 100%; padding: 10px; border: 1px dashed var(--line); border-radius: 12px; background: #0f1528; color: var(--muted);
+    }
+    .row { display: flex; gap: 12px; }
+    .row > div { flex: 1; }
+    .actions { display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+    button {
+      border: 0; border-radius: 12px; padding: 12px 16px; font-weight: 700; cursor: pointer;
+    }
+    .primary { background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #061018; }
+    .secondary { background: #1a2240; color: var(--text); border: 1px solid var(--line); }
+    .status {
+      margin-top: 16px; padding: 14px; border-radius: 12px; background: #0f1528; border: 1px solid var(--line); color: #d9e2ff;
+      white-space: pre-wrap;
+      min-height: 96px;
+    }
+    .steps { margin: 0; padding-left: 18px; color: var(--muted); line-height: 1.7; }
+    .pill { display: inline-block; margin: 4px 8px 0 0; padding: 6px 10px; border-radius: 999px; background: #10182f; border: 1px solid var(--line); color: #c8d4f6; font-size: 12px; }
+    .footer { margin-top: 18px; color: var(--muted); font-size: 13px; }
+    @media (max-width: 860px) {
+      .hero { flex-direction: column; align-items: flex-start; }
+      .grid { grid-template-columns: 1fr; }
+      h1 { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <span class="badge">Internal demo for TikTok review</span>
+        <h1>Loup Content Publisher</h1>
+        <p>
+          A lightweight internal workflow for connecting a TikTok account, preparing short-form video metadata,
+          and publishing videos through a controlled content pipeline.
+        </p>
+      </div>
+      <div class="card" style="min-width: 280px;">
+        <div class="section-title">Requested products</div>
+        <span class="pill">Login / OAuth</span>
+        <span class="pill">Content Posting API</span>
+        <div class="footer">This demo is intended for sandbox/review recording.</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2 class="section-title">Publish workflow demo</h2>
+
+        <label>TikTok account connection</label>
+        <div class="actions">
+          <button class="secondary" id="connectBtn">Connect TikTok Account</button>
+          <button class="secondary" id="callbackBtn">Simulate OAuth Callback</button>
+        </div>
+
+        <label for="video">Video file</label>
+        <input type="file" id="video" accept="video/mp4,video/mov" />
+
+        <div class="row">
+          <div>
+            <label for="title">Title</label>
+            <input type="text" id="title" value="Cute cat moment compilation" />
+          </div>
+          <div>
+            <label for="privacy">Privacy</label>
+            <select id="privacy">
+              <option>PUBLIC_TO_EVERYONE</option>
+              <option>SELF_ONLY</option>
+              <option>MUTUAL_FOLLOW_FRIENDS</option>
+            </select>
+          </div>
+        </div>
+
+        <label for="caption">Caption</label>
+        <textarea id="caption">Cute cat moments from today's content batch. #cat #cute #pet #fyp</textarea>
+
+        <div class="actions">
+          <button class="primary" id="publishBtn">Publish to TikTok</button>
+          <button class="secondary" id="statusBtn">Check Publish Status</button>
+        </div>
+
+        <div class="status" id="statusBox">Ready.
+- Step 1: Connect account
+- Step 2: Select video
+- Step 3: Publish
+- Step 4: Check status</div>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">What to show in your review video</h2>
+        <ol class="steps">
+          <li>Open this page on your own domain or local review environment.</li>
+          <li>Show the TikTok account connection step.</li>
+          <li>Select a sample video file.</li>
+          <li>Edit title/caption/privacy settings.</li>
+          <li>Click publish to simulate the Content Posting flow.</li>
+          <li>Show the publish status result.</li>
+        </ol>
+
+        <h2 class="section-title" style="margin-top: 22px;">Review notes</h2>
+        <p>
+          This is an internal publishing tool, not a public consumer app. The UI is intentionally minimal and only
+          exposes account authorization and content publishing functions required for the TikTok integration.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const statusBox = document.getElementById('statusBox');
+    const connectBtn = document.getElementById('connectBtn');
+    const callbackBtn = document.getElementById('callbackBtn');
+    const publishBtn = document.getElementById('publishBtn');
+    const statusBtn = document.getElementById('statusBtn');
+
+    let connected = false;
+    let published = false;
+
+    connectBtn.addEventListener('click', () => {
+      statusBox.textContent = 'Opening TikTok OAuth authorization...\n\nGET /oauth/authorize\nclient_key=YOUR_CLIENT_KEY\nredirect_uri=https://your-domain.example/tiktok/callback\nscope=...';
+    });
+
+    callbackBtn.addEventListener('click', () => {
+      connected = true;
+      statusBox.textContent = 'OAuth callback received.\n\nAuthorization code exchanged successfully.\nTikTok account connected in review/sandbox environment.';
+    });
+
+    publishBtn.addEventListener('click', () => {
+      if (!connected) {
+        statusBox.textContent = 'Please connect the TikTok account first.';
+        return;
+      }
+      const fileInput = document.getElementById('video');
+      const title = document.getElementById('title').value.trim();
+      const caption = document.getElementById('caption').value.trim();
+      const privacy = document.getElementById('privacy').value;
+      statusBox.textContent = [
+        'Submitting publish request...',
+        '',
+        'POST /content/post/init',
+        `title='${title || '(empty)'}'`,
+        `caption='${caption || '(empty)'}'`,
+        `privacy='${privacy}'`,
+        `video='${fileInput.files[0] ? fileInput.files[0].name : 'sample-video.mp4'}'`,
+        '',
+        'Upload complete.',
+        'Publish request accepted.',
+        'Publish ID: demo_publish_001'
+      ].join('\n');
+      published = true;
+    });
+
+    statusBtn.addEventListener('click', () => {
+      if (!published) {
+        statusBox.textContent = 'No publish task yet. Click Publish to TikTok first.';
+        return;
+      }
+      statusBox.textContent = [
+        'Checking publish status...',
+        '',
+        'GET /content/post/status?publish_id=demo_publish_001',
+        'status=SUCCESS',
+        'post_id=demo_post_001',
+        'post_url=https://www.tiktok.com/@demo/video/1234567890'
+      ].join('\n');
+    });
+  </script>
+</body>
+</html>
